@@ -24,16 +24,16 @@ public class Main {
 	}
 	
 	
-	static ExecutorService service = Executors.newCachedThreadPool();
+	static ExecutorService service = Executors.newFixedThreadPool(1000);
 
 	private static void hehe() throws Exception {
 		
 		ServerSocket serverSocket = new ServerSocket(8091);
 		while(true) {
 			Socket socket = serverSocket.accept();
+			System.out.println(socket.getInetAddress().getHostAddress());
 			ReadWriteRunnable readWriteRunnable = new ReadWriteRunnable(socket);
 			service.execute(readWriteRunnable);
-			
 		}
 
 	}
