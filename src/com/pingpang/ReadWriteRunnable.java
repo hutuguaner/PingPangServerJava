@@ -18,7 +18,6 @@ import com.pingpang.bean.ClientBean;
 import com.pingpang.bean.MsgBean;
 import com.pingpang.manager.MsgManager;
 
-import net.sf.json.JSON;
 
 public class ReadWriteRunnable implements Runnable {
 
