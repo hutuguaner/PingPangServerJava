@@ -1,4 +1,4 @@
-package com.pingpang.bean;
+
 
 public class ClientBean {
 	

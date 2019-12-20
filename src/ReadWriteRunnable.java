@@ -1,4 +1,4 @@
-package com.pingpang;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,9 +14,6 @@ import java.util.Queue;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.pingpang.bean.ClientBean;
-import com.pingpang.bean.MsgBean;
-import com.pingpang.manager.MsgManager;
 
 
 public class ReadWriteRunnable implements Runnable {
@@ -53,7 +50,7 @@ public class ReadWriteRunnable implements Runnable {
 				readline = bufferedReader.readLine();
 				if (readline != null && !readline.trim().equals("") && !readline.trim().equals("null")
 						&& com.alibaba.fastjson.JSON.isValid(readline)) {
-					System.out.println("服务器收到数据： " + readline);
+					System.out.println("data from client: " + readline);
 					MsgBean msg = com.alibaba.fastjson.JSON.parseObject(readline, MsgBean.class);
 					token = msg.getFrom().get(0).getToken();
 					lat = msg.getFrom().get(0).getLat();
@@ -61,7 +58,6 @@ public class ReadWriteRunnable implements Runnable {
 					MsgManager.getInstance().dispatchMsg(this,msg);
 
 				} else {
-					//System.out.println("服务器收到数据： " + readline);
 				}
 
 				MsgBean msg = msgQueue.poll();

@@ -1,4 +1,4 @@
-package com.pingpang.manager;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
-import com.pingpang.ReadWriteRunnable;
-import com.pingpang.bean.ClientBean;
-import com.pingpang.bean.MsgBean;
 
 public class MsgManager {
 
@@ -29,17 +26,14 @@ public class MsgManager {
 
 	private Map<String, ReadWriteRunnable> clientMap;
 
-	// 消息分發
 	public void dispatchMsg(ReadWriteRunnable client, MsgBean msg) {
 		
 		int type = msg.getType();
 		if (type == 0) {
-			// 连接，全部分发
 			clientMap.put(msg.getFrom().get(0).getToken(), client);
 			online(msg.getFrom().get(0));
 
 		} else if (type == 1) {
-			// 通信，指定分发
 			List<ClientBean> tos = msg.getTo();
 			for (ClientBean to : tos) {
 				ReadWriteRunnable readWriteRunnable = clientMap.get(to.getToken());
@@ -49,15 +43,12 @@ public class MsgManager {
 				readWriteRunnable.addMsgThatWaitToSend(msg);
 			}
 		} else if (type == 2) {
-			// 断开，全部分发
 			clientMap.remove(msg.getFrom().get(0).getToken());
 			offline(msg.getFrom().get(0));
 		}
 	}
 
-	// 有人上綫
 	private void online(ClientBean client) {
-		// 通知所有人
 		Iterator<String> iterator = clientMap.keySet().iterator();
 		while (iterator.hasNext()) {
 			String token = iterator.next();
@@ -72,7 +63,6 @@ public class MsgManager {
 
 	}
 
-	// 将所有人的数据发给刚上线人
 	private void sendOtherClientsTo(ClientBean client) {
 		Iterator<String> iterator = clientMap.keySet().iterator();
 		List<ClientBean> otherClients = new ArrayList<ClientBean>();
@@ -97,9 +87,7 @@ public class MsgManager {
 		clientMap.get(client.getToken()).addMsgThatWaitToSend(msg);
 	}
 
-	// 有人下线
 	private void offline(ClientBean client) {
-		// 通知所有人
 		Iterator<String> iterator = clientMap.keySet().iterator();
 		while (iterator.hasNext()) {
 			String token = iterator.next();

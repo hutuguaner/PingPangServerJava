@@ -1,4 +1,4 @@
-package com.pingpang.bean;
+
 
 import java.util.List;
 
